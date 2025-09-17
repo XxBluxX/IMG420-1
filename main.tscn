@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://hu51kqjy5my5"]
+
+[ext_resource type="Script" uid="uid://ctas8xka0tpdk" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://c0qhy1agiwl60" path="res://enemy.tscn" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://l2c1sgb5ka7a" path="res://player.tscn" id="3_lquwl"]
+[ext_resource type="PackedScene" uid="uid://c5tejlbvdl86f" path="res://hud.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://cw37klfu21s0o" path="res://Key.tscn" id="5_lquwl"]
+
+[sub_resource type="Curve2D" id="Curve2D_7mycd"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 24, 16, 0, 0, 0, 0, 456, 16, 0, 0, 0, 0, 456, 688, 0, 0, 0, 0, 24, 688, 0, 0, 0, 0, 24, 16)
+}
+point_count = 5
+
+[node name="Main" type="Node"]
+script = ExtResource("1_h2yge")
+enemy_scene = ExtResource("2_1bvp3")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.560449, 0.902529, 0.966139, 1)
+
+[node name="Player" parent="." instance=ExtResource("3_lquwl")]
+
+[node name="EnemyTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(90, 100)
+
+[node name="EnemyPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_7mycd")
+
+[node name="EnemySpawnLocation" type="PathFollow2D" parent="EnemyPath"]
+position = Vector2(24, 16)
+
+[node name="StartTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
+
+[node name="Key" parent="." instance=ExtResource("5_lquwl")]
+
+[node name="Enemy" parent="." instance=ExtResource("2_1bvp3")]
+
+[connection signal="hit" from="Player" to="." method="game_over"]
+[connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="begin_game" from="HUD" to="." method="new_game"]

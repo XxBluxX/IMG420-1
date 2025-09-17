@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0qhy1agiwl60"]
+
+[ext_resource type="Texture2D" uid="uid://bbdrcrlhfkmnr" path="res://Enemy.png" id="1_7k104"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4gyqm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_7k104")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qi2p4"]
+radius = 30.28
+
+[node name="Enemy" type="RigidBody2D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 3
+gravity_scale = 0.0
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_4gyqm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 0
+position = Vector2(-10, -10)
+shape = SubResource("CircleShape2D_qi2p4")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
